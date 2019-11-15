@@ -4,36 +4,38 @@ import co.adeshina.rcopy.dto.File;
 import co.adeshina.rcopy.dto.RepositoryCopyLog;
 import co.adeshina.rcopy.exception.RepositoryAccessException;
 import co.adeshina.rcopy.exception.RepositoryCopyException;
-import co.adeshina.rcopy.internal.service.FilesDownloadService;
-import co.adeshina.rcopy.internal.service.GitHostApiService;
-import co.adeshina.rcopy.internal.dto.FileContents;
+import co.adeshina.rcopy.internal.service.FilesService;
+import co.adeshina.rcopy.internal.service.RepositoryService;
+import co.adeshina.rcopy.internal.dto.FileContent;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 
+/**
+ * todo: Javadoc main entry point....
+ */
 public final class RepositoryCopyExecutor {
 
-    private static final String EXCEPTION_MSG_FORMAT = "Failed to copy contents of repository %s/%s on %s";
+    private static final String EXCEPTION_MSG_FORMAT = "Failed to copy contents of repository %s/%s from %s";
 
     private final RepositoryCopyConfig copyConfig;
-    private final GitHostApiService gitHostApiService;
-    private final FilesDownloadService filesDownloadService;
+    private final RepositoryService repositoryService;
+    private final FilesService filesService;
 
-    RepositoryCopyExecutor(RepositoryCopyConfig copyConfig, GitHostApiService gitHostApiService, FilesDownloadService filesDownloadService) {
+    private RepositoryCopyExecutor(RepositoryCopyConfig copyConfig, RepositoryService repositoryService,
+            FilesService filesService) {
         this.copyConfig = copyConfig;
-        this.gitHostApiService = gitHostApiService;
-        this.filesDownloadService = filesDownloadService;
+        this.repositoryService = repositoryService;
+        this.filesService = filesService;
     }
 
     public RepositoryCopyExecutor get(RepositoryCopyConfig copyConfig) {
-        GitHostApiService apiService = GitHostApiService.get(copyConfig.hostingService());
-        return new RepositoryCopyExecutor(copyConfig, apiService, FilesDownloadService.getInstance());
+        RepositoryService apiService = RepositoryService.get(copyConfig);
+        FilesService filesService = new FilesService();
+        return new RepositoryCopyExecutor(copyConfig, apiService, filesService);
     }
 
     public RepositoryCopyLog execute() throws RepositoryCopyException {
@@ -46,10 +48,15 @@ public final class RepositoryCopyExecutor {
         Set<File> files;
 
         try {
-            files = gitHostApiService.files(copyConfig);
+
+            files = repositoryService.files();
+
             for (File file : files) {
-                processFile(file);
+                FileContent contents = filesService.download(file.getContentUrl());
+                Path filePath = file.getPath();
+                filesService.write(filePath, contents);
             }
+
         } catch (RepositoryAccessException | IOException e) {
             throw new RepositoryCopyException(String.format(EXCEPTION_MSG_FORMAT, user, repo, service.toString()), e);
         }
@@ -61,26 +68,5 @@ public final class RepositoryCopyExecutor {
         log.setRepository(repo);
 
         return log;
-    }
-
-    private void processFile(File file) throws IOException {
-
-        FileContents contents = filesDownloadService.download(file.getContentUrl());
-        byte[] fileBytes = contents.getBytes();
-        Path filePath = file.getPath();
-
-        switch (contents.getType()) {
-            case TEXT:
-                Charset charset = contents.getCharset();
-                String text = new String(fileBytes, charset);
-                try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {
-                    writer.write(text, 0, text.length());
-                }
-                break;
-
-            case BINARY:
-                Files.write(filePath, fileBytes);
-                break;
-        }
     }
 }
