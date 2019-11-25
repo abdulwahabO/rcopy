@@ -2,15 +2,14 @@ package co.adeshina.rcopy.internal.service.github;
 
 import co.adeshina.rcopy.exception.RepositoryAccessException;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import java.io.IOException;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,13 +17,12 @@ import okhttp3.ResponseBody;
 
 public class GithubRestClient {
 
-    // todo: change this during testing.
-    public String GITHUB_API_BASE_URL = "https://api.github.com";
+    public static String GITHUB_BASE_URL = "https://api.github.com";
     private static String REPOSITORY_CONTENTS_URL_FORMAT = "/repos/%s/%s/contents/";
 
     private OkHttpClient client = new OkHttpClient();
     private Type collectionType = new TypeToken<ArrayList<GithubRepositoryItem>>(){}.getType();
-    private Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES).create();
+    private Gson gson =  new Gson();
 
     private String repository;
     private String username;
@@ -40,7 +38,7 @@ public class GithubRestClient {
 
     List<GithubRepositoryItem> repositoryContents(String path) throws RepositoryAccessException {
 
-        String url = String.format(GITHUB_API_BASE_URL + REPOSITORY_CONTENTS_URL_FORMAT, username, repository);
+        String url = String.format(GITHUB_BASE_URL + REPOSITORY_CONTENTS_URL_FORMAT, username, repository);
         url += path == null ? "" : path;
         url += ref == null ? "" : "?ref=" + ref;
 

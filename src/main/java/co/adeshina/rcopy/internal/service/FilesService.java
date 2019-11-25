@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import java.nio.file.StandardOpenOption;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -35,6 +36,7 @@ public class FilesService {
             if (response.isSuccessful() && body != null) {
 
                 MediaType contentType = body.contentType();
+
                 FileType type = contentType.type().equals("text") ? FileType.TEXT : FileType.BINARY;
                 Charset charset = contentType.charset();
                 byte[] bytes = body.bytes();

@@ -1,12 +1,13 @@
 package co.adeshina.rcopy.internal.service;
 
 import co.adeshina.rcopy.exception.RepositoryAccessException;
-import co.adeshina.rcopy.executor.RepositoryCopyConfig;
+import co.adeshina.rcopy.CopyConfig;
 import co.adeshina.rcopy.internal.service.github.GithubRepositoryService;
 import co.adeshina.rcopy.dto.File;
-import co.adeshina.rcopy.executor.GitHostingService;
+import co.adeshina.rcopy.GitHostingService;
 
 import co.adeshina.rcopy.internal.service.github.GithubRestClient;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,12 +21,12 @@ public interface RepositoryService {
      * @return Metadata describing the files on the remote repository.
      * @throws RepositoryAccessException if for any reason attempts to access the repository data fail.
      */
-    Set<File> files() throws RepositoryAccessException;
+    List<File> files() throws RepositoryAccessException;
 
     /**
      * Returns a concrete implementation of this interface for the given hosting service.
      */
-    static RepositoryService get(RepositoryCopyConfig config) {
+    static RepositoryService get(CopyConfig config) {
 
         RepositoryService service = null;
 

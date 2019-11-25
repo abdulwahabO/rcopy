@@ -7,21 +7,23 @@ import java.nio.file.Path;
  */
 public class File {
 
-    private final Path path;
+    private final String fileName;
+    private final Path directoryPath;
     private final String contentUrl;
     private final long size;
 
     /**
-     * Constructor.
+     * Instantiates a {@link File}.
      *
      * @param contentUrl - Remote URL from which the file's contents can be downloaded.
-     * @param path - Location of the file on local filesystem
+     * @param directoryPath - Location of the file on local filesystem
      * @param size - The size of the file in bytes.
      */
-    public File(String contentUrl, Path path, long size) {
+    public File(String contentUrl, Path directoryPath, long size, String fileName) {
         this.contentUrl = contentUrl;
         this.size = size;
-        this.path = path;
+        this.fileName = fileName;
+        this.directoryPath = directoryPath;
     }
 
     /**
@@ -39,14 +41,22 @@ public class File {
     }
 
     /**
-     * Returns a {@link Path} pointing to the location of the file.
+     * Returns a {@link Path} to the directory holding this file. This combined with <code>filename</code> gives the
+     * absolute path to the file on the local filesystem.
      */
-    public Path getPath() {
-        return path;
+    public Path getDirectoryPath() {
+        return directoryPath;
+    }
+
+    /**
+     *
+     */
+    public String getFileName() {
+        return fileName;
     }
 
     @Override
     public String toString() {
-        return String.format("%s | %d bytes", path.toString(), size);
+        return String.format("%s | %d bytes", directoryPath.toString(), size);
     }
 }

@@ -1,4 +1,4 @@
-package co.adeshina.rcopy.executor;
+package co.adeshina.rcopy;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class RepositoryCopyConfigTest {
+class CopyConfigTest {
 
     private static final String TARGET_DIR_PATH = "/usr/etc";
     private String user = "test-user";
@@ -18,7 +18,7 @@ class RepositoryCopyConfigTest {
 
     @Test
     public void builderSetsConfigProperties() {
-        RepositoryCopyConfig config = new RepositoryCopyConfig.Builder(user, repo, path, hostingService)
+        CopyConfig config = new CopyConfig.Builder(user, repo, path, hostingService)
                                                               .httpUserAgent("Agent-String")
                                                               .excludePatterns(Collections.emptyList())
                                                               .build();

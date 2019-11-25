@@ -1,4 +1,4 @@
-package co.adeshina.rcopy.executor;
+package co.adeshina.rcopy;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * Configuration for the copy process.
  */
-public class RepositoryCopyConfig {
+public class CopyConfig {
 
     private String username;
     private String repository;
@@ -18,7 +18,7 @@ public class RepositoryCopyConfig {
     private List<Pattern> exclusions;
     private String httpUserAgent;
 
-    private RepositoryCopyConfig() {
+    private CopyConfig() {
 
     }
 
@@ -129,8 +129,8 @@ public class RepositoryCopyConfig {
         /**
          * Builds a configuration for the copy process.
          */
-        public RepositoryCopyConfig build() {
-            RepositoryCopyConfig config = new RepositoryCopyConfig();
+        public CopyConfig build() {
+            CopyConfig config = new CopyConfig();
             config.exclusions = this.exclusions;
             config.gitService = this.gitService;
             config.ref = this.ref;
