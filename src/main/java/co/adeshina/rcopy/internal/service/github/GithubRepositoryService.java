@@ -15,6 +15,9 @@ import java.util.Queue;
 
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@link RepositoryService} for Github. For internal use only.
+ */
 public final class GithubRepositoryService implements RepositoryService {
 
     private Queue<String> directories = new LinkedList<>();

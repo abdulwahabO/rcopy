@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds data from the successful copy of the contents of a remote repository.
+ * Holds data from the successful copy of the contents of a remote git repository.
  */
 public class RepositoryCopyLog {
 

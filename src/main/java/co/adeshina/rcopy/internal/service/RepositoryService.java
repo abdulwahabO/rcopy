@@ -8,18 +8,17 @@ import co.adeshina.rcopy.GitHostingService;
 
 import co.adeshina.rcopy.internal.service.github.GithubRestClient;
 import java.util.List;
-import java.util.Set;
 
 /**
- * Base interface for services that interact with the Rest API of Git hosting providers.
+ * Base interface for services that interact with the Rest API of Git hosting services.
  */
 public interface RepositoryService {
 
     /**
-     * Returns a set of {@link File} for all the files on the remote repository that can be copied.
+     * Returns a collection of {@link File} for all the files on the remote repository that can be copied.
      *
      * @return Metadata describing the files on the remote repository.
-     * @throws RepositoryAccessException if for any reason attempts to access the repository data fail.
+     * @throws RepositoryAccessException if for any reason attempts to access the repository's data fail.
      */
     List<File> files() throws RepositoryAccessException;
 

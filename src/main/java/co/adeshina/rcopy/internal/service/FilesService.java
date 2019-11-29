@@ -9,7 +9,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import java.nio.file.StandardOpenOption;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,9 +20,8 @@ public class FilesService {
     private final OkHttpClient client = new OkHttpClient();
 
     /**
-     * Takes a URL from which the contents of a file can be downloaded. Returns a {@link FileContent}.
-     *
-     * @throws IOException for any network I/O errors.
+     * Takes a URL from which the contents of a file can be downloaded. Returns a {@link FileContent} which holds the
+     * contents of the file.
      */
     public FileContent download(String url) throws IOException {
 
@@ -50,9 +48,7 @@ public class FilesService {
     }
 
     /**
-     *
-     * @param filePath
-     * @param content
+     * Writes a file to the filesystem using the given path and file contents.
      */
     public void write(Path filePath, FileContent content) throws IOException {
         Charset charset = content.getCharset();

@@ -2,6 +2,9 @@ package co.adeshina.rcopy.internal.service.github;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model for the Github's Content API response object. Designed for internal use only.
+ */
 public class GithubRepositoryItem {
 
     private String name;

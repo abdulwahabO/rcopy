@@ -14,10 +14,10 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
- * todo: Javadoc main entry point....
+ * Main class and entry-point for RCopy. Call {@link RepositoryCopyExecutor#get(CopyConfig)} to configure and
+ * instantiate this object. Use {@link RepositoryCopyExecutor#execute()} to kick off the file copying process.
  */
 public final class RepositoryCopyExecutor {
 
@@ -34,8 +34,8 @@ public final class RepositoryCopyExecutor {
     }
 
     /**
-     *
-     * @param copyConfig
+     * Takes config for repository copy and returns an executor for the process.
+     * @param copyConfig The config for the copy process.
      */
     public static RepositoryCopyExecutor get(CopyConfig copyConfig) {
         RepositoryService apiService = RepositoryService.get(copyConfig);
@@ -43,6 +43,13 @@ public final class RepositoryCopyExecutor {
         return new RepositoryCopyExecutor(copyConfig, apiService, filesService);
     }
 
+    /**
+     * This kicks off the repo copy process. It blocks until all files not excluded are successfully copied to the
+     * local filesystem.
+     *
+     * @return a log with metadata of the copied files.
+     * @throws RepositoryCopyException If the process fails for any reason.
+     */
     public RepositoryCopyLog execute() throws RepositoryCopyException {
 
         LocalDateTime start = LocalDateTime.now();

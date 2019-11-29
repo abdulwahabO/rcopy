@@ -23,15 +23,6 @@ import org.junit.jupiter.api.Test;
 
 class RepositoryCopyExecutorIT {
 
-    // todo: Final Steps
-    // 1. Write this class.
-    // 2. Write Javadoc for all classes.
-    // 3. Write README for project.
-    // 4. Do final push to Github.
-    // 5. Start plans for Http server using Netty + Gradle.
-
-    // todo: Should this be an integration test?? Yes because collaborators are no mocked.
-
     private String username = "adeshina";
     private String repository = "rcopy";
     private GitHostingService hostingService = GitHostingService.GITHUB;

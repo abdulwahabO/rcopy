@@ -3,7 +3,7 @@ package co.adeshina.rcopy.dto;
 import java.nio.file.Path;
 
 /**
- * Metadata of a file copied from a remote repository to the local filesystem.
+ * Metadata of a file copied from a remote git repository to the local filesystem.
  */
 public class File {
 
@@ -49,10 +49,17 @@ public class File {
     }
 
     /**
-     *
+     * The name of the file. This, combined with <code>directoryPath</code>, can be used to access the file.
      */
     public String getFileName() {
         return fileName;
+    }
+
+    /**
+     * Returns an absolute {@link Path} to the file.
+     */
+    public Path pathToFile() {
+        return directoryPath.resolve(fileName);
     }
 
     @Override
